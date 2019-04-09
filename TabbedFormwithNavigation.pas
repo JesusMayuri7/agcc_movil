@@ -12,7 +12,8 @@ uses
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Data.Bind.EngExt,
   Fmx.Bind.DBEngExt, System.Rtti, System.Bindings.Outputs, Fmx.Bind.Editors,
   Data.Bind.DBScope, FMX.ListView.Types, FMX.ListView.Appearances,
-  FMX.ListView.Adapters.Base, FMX.ListView, FMX.ScrollBox, FMX.Memo;
+  FMX.ListView.Adapters.Base, FMX.ListView, FMX.ScrollBox, FMX.Memo,
+  MultiDetailAppearanceU;
 
 type
   TTabbedwithNavigationForm = class(TForm)
@@ -98,9 +99,9 @@ type
     BindSourceDB2: TBindSourceDB;
     BindSourceDB3: TBindSourceDB;
     BindSourceDB4: TBindSourceDB;
-    LinkListControlToField2: TLinkListControlToField;
-    LinkListControlToField3: TLinkListControlToField;
-    LinkListControlToField1: TLinkListControlToField;
+    linkTipoProducto: TLinkListControlToField;
+    linkPerfilCliente: TLinkListControlToField;
+    linkLineaCredito: TLinkListControlToField;
     lst3: TListBox;
     ListBoxItem7: TListBoxItem;
     ListBoxItem8: TListBoxItem;
@@ -165,12 +166,18 @@ type
     LinkGiroNegocio: TLinkFillControlToField;
     BindSourceDB8: TBindSourceDB;
     LinkTipoPrestamo: TLinkFillControlToField;
-    LinkPropertyToFieldTag: TLinkPropertyToField;
     ListBoxItem29: TListBoxItem;
     cbbGarantia: TComboBox;
     BindSourceDB9: TBindSourceDB;
     LinkGarantia: TLinkFillControlToField;
     edComentario: TMemo;
+    lst8: TListBox;
+    ListBoxItem30: TListBoxItem;
+    lv1: TListView;
+    btn7: TSpeedButton;
+    LinkFillControlToField1: TLinkFillControlToField;
+    Label1: TLabel;
+    Label2: TLabel;
     procedure GestureDone(Sender: TObject; const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
@@ -188,6 +195,7 @@ type
     procedure lstDataItemClick(const Sender: TCustomListBox;
       const Item: TListBoxItem);
     procedure btn6Click(Sender: TObject);
+    procedure btn7Click(Sender: TObject);
   private
     { Private declarations }
     function Login(email,clave:string):Boolean;
@@ -202,6 +210,8 @@ type
     perfil_cliente_tipo_producto_id,garantia_id:Variant;comentario:string;
     activo:boolean;avales:TJsonArray;tipoInfo:TJSONArray;aIncial,aProgramado:Real;tipo_interes:string);
     function GridToJsonArray(lista: TListview): TJsonArray;
+    procedure listarSolictidu();
+    var paginaActual:integer;
   public
     { Public declarations }
   end;
@@ -385,6 +395,48 @@ begin
   finally
     ini.Free;
   end;
+end;
+
+procedure TTabbedwithNavigationForm.listarSolictidu;
+var graph:Tgraph;
+var variables:TJSONObject;
+var dataVar,dataRest,query:TJSONObject;
+var resultado:TJsonObject;
+var avales:widestring;
+begin
+    resultado:=TJSONObject.Create;
+    graph:=TGraph.Create(dmdataMOvil.RESTClient1,fdSolicitud);
+    try  // Cambiar por el query a consultar, hacer pruebas en Insomnia
+    graph.query:='query solicitud { solicitudQuery { data {id,activo,monto,plazo,cuota,interes,'+
+    'comentario,reporte_ceop,reporte_ceop_id,reporte_info,reporte_info_id,cliente_full_name,garantia,garantia_id,empleado,'+
+    'tipo_producto,tipo_producto_id,tipo_prestamo,tipo_prestamo_id,nro_solicitud,estado,'+
+    'perfil_cliente,perfil_cliente_id,'+'linea_credito,linea_credito_id,cliente_dni,perfil_cliente_tipo_producto_id,'+
+    'giro_negocio,giro_negocio_id,created_at,ahorro_inicial,ahorro_programado,tipo_interes,'+
+    'avales {id,dni,full_name,tipo},tipo_info_detalle {tipo_info_detalle_id,solicitud_id,monto},resolucion_id }}}';
+    //NO variar
+    variables:=TJSONObject.Create;
+    dataVar:=TJSONObject.Create;
+//    dataVar.AddPair('limit',TJSONNumber.Create(cbbRegistros.Items[cbbRegistros.ItemIndex]));
+    dataVar.AddPair('per_page',TJSONNumber.Create(paginaActual));
+   // if length(edcriterio.Text)>0 then
+   //    dataVar.AddPair('desc_linea_credito',TJSONString.Create(edCriterio.Text));// depende el campo en que busques
+    variables.AddPair('variables',dataVar);
+    graph.variables:=variables;
+
+    graph.rootElement:='data.solicitudQuery.data'; // cambiar por el nombre del Query que buscas linea_creditoQuery
+
+    resultado:=graph.ejecutar('solicitudQuery');  // cambiar por el nombre del Query que buscas linea_creditoQuery
+
+    // uHelpers.JsonToDataset(fdAvales,VarToStr(fdSolicitud.FieldValues['avales']));
+
+//    uHelpers.JsonToDataset(fdAvales,TJsonArray((TJsonObject(resultado.Get('data').JsonValue.ToJSON).Get(0)).JsonValue.ToJSON));
+    // NO variar
+//    lblPaginaActual.Caption:=paginaActual.ToString;
+//    lblTotalPagina.Caption:= graph.totalPag.ToString;
+    finally
+       FreeAndNil(resultado);
+       FreeAndNil(graph);
+    end;
 end;
 
 procedure TTabbedwithNavigationForm.llenarData;
@@ -676,6 +728,11 @@ begin
         end;
     end;
 
+end;
+
+procedure TTabbedwithNavigationForm.btn7Click(Sender: TObject);
+begin
+listarSolictidu();
 end;
 
 procedure TTabbedwithNavigationForm.btnNuevoClienteClick(Sender: TObject);
