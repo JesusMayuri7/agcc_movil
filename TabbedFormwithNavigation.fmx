@@ -5,6 +5,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
   ClientHeight = 634
   ClientWidth = 405
   StyleBook = StyleBook1
+  Visible = True
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -374,13 +375,13 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
           ExplicitSize.cy = 8.000000000000000000
           object ToolBar2: TToolBar
             Size.Width = 405.000000000000000000
-            Size.Height = 48.000000000000000000
+            Size.Height = 40.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0
             object lblTitle2: TLabel
               Align = Contents
               Size.Width = 405.000000000000000000
-              Size.Height = 48.000000000000000000
+              Size.Height = 40.000000000000000000
               Size.PlatformDefault = False
               StyleLookup = 'toollabel'
               TextSettings.HorzAlign = Center
@@ -394,7 +395,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               Margins.Left = 5.000000000000000000
               Position.X = 5.000000000000000000
               Size.Width = 67.000000000000000000
-              Size.Height = 48.000000000000000000
+              Size.Height = 40.000000000000000000
               Size.PlatformDefault = False
               StyleLookup = 'backtoolbutton'
             end
@@ -406,7 +407,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               Padding.Bottom = 5.000000000000000000
               Position.X = 344.000000000000000000
               Size.Width = 61.000000000000000000
-              Size.Height = 48.000000000000000000
+              Size.Height = 40.000000000000000000
               Size.PlatformDefault = False
               Text = 'Crear'
               OnClick = btn6Click
@@ -414,7 +415,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
           end
           object lst5: TListBox
             Align = Top
-            Position.Y = 48.000000000000000000
+            Position.Y = 40.000000000000000000
             Size.Width = 405.000000000000000000
             Size.Height = 129.000000000000000000
             Size.PlatformDefault = False
@@ -523,7 +524,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
           end
           object lst6: TListBox
             Align = Top
-            Position.Y = 177.000000000000000000
+            Position.Y = 169.000000000000000000
             Size.Width = 405.000000000000000000
             Size.Height = 56.000000000000000000
             Size.PlatformDefault = False
@@ -607,9 +608,9 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
             HeaderAppearanceClassName = 'TListHeaderObjects'
             FooterAppearanceClassName = 'TListHeaderObjects'
             Align = Top
-            Position.Y = 233.000000000000000000
+            Position.Y = 225.000000000000000000
             Size.Width = 405.000000000000000000
-            Size.Height = 136.000000000000000000
+            Size.Height = 72.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 3
             ItemAppearanceObjects.ItemObjects.ObjectsCollection = <
@@ -646,7 +647,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
           object lstData: TListBox
             Align = Client
             Size.Width = 405.000000000000000000
-            Size.Height = 88.000000000000000000
+            Size.Height = 160.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'lstDataStyle1'
             TabOrder = 4
@@ -656,11 +657,11 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
             DefaultItemStyles.GroupFooterStyle = ''
             OnItemClick = lstDataItemClick
             Viewport.Width = 401.000000000000000000
-            Viewport.Height = 84.000000000000000000
+            Viewport.Height = 156.000000000000000000
           end
           object lst7: TListBox
             Align = Top
-            Position.Y = 369.000000000000000000
+            Position.Y = 297.000000000000000000
             Size.Width = 405.000000000000000000
             Size.Height = 128.000000000000000000
             Size.PlatformDefault = False
@@ -874,7 +875,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
           Size.PlatformDefault = False
           StyleLookup = 'toollabel'
           TextSettings.HorzAlign = Center
-          Text = 'Title'
+          Text = 'Solicitudes'
         end
         object btn7: TSpeedButton
           Align = Left
@@ -908,12 +909,43 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
           Size.Height = 33.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
-          Text = 'ListBoxItem30'
+          Text = 'Filtro :'
+          object cbFecha: TDateEdit
+            Date = 43568.000000000000000000
+            Position.X = 160.000000000000000000
+            Position.Y = 5.000000000000000000
+            TabOrder = 0
+          end
+          object cbbCriterio: TComboBox
+            Items.Strings = (
+              'NINGUNO'
+              'FECHA')
+            ItemIndex = 0
+            Padding.Left = 5.000000000000000000
+            Padding.Top = 5.000000000000000000
+            Padding.Right = 5.000000000000000000
+            Padding.Bottom = 5.000000000000000000
+            Position.X = 48.000000000000000000
+            Position.Y = 3.000000000000000000
+            Size.Width = 97.000000000000000000
+            Size.Height = 25.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 2
+          end
+          object btn8: TButton
+            Align = Right
+            Position.X = 321.000000000000000000
+            Size.Width = 80.000000000000000000
+            Size.Height = 33.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 4
+            Text = 'Buscar'
+          end
         end
       end
-      object lv1: TListView
-        ItemAppearanceClassName = 'TDynamicAppearance'
-        ItemEditAppearanceClassName = 'TDynamicAppearance'
+      object lvSolicitudes: TListView
+        ItemAppearanceClassName = 'TImageListItemBottomDetailRightButtonAppearance'
+        ItemEditAppearanceClassName = 'TImageListItemBottomDetailRightButtonShowCheckAppearance'
         HeaderAppearanceClassName = 'TListHeaderObjects'
         FooterAppearanceClassName = 'TListHeaderObjects'
         Align = Client
@@ -921,29 +953,10 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
         Size.Height = 496.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 2
-        ItemAppearanceObjects.ItemObjects.ObjectsCollection = <
-          item
-            AppearanceObjectName = 'Text1'
-            AppearanceClassName = 'TTextObjectAppearance'
-            Appearance.Width = 350.000000000000000000
-            Appearance.Height = 44.000000000000000000
-            Appearance.PlaceOffset.X = 24.000000000000000000
-          end
-          item
-            AppearanceObjectName = 'Text2'
-            AppearanceClassName = 'TTextObjectAppearance'
-            Appearance.Width = 336.000000000000000000
-            Appearance.Height = 12.000000000000000000
-            Appearance.PlaceOffset.Y = 16.000000000000000000
-          end>
-        ItemAppearanceObjects.ItemEditObjects.ObjectsCollection = <
-          item
-            AppearanceObjectName = 'Text1'
-            AppearanceClassName = 'TTextObjectAppearance'
-          end>
-        ItemAppearanceObjects.HeaderObjects.Text.Width = 200.000000000000000000
-        ItemAppearanceObjects.HeaderObjects.Text.Height = 24.000000000000000000
-        ItemAppearanceObjects.HeaderObjects.Text.PlaceOffset.X = 112.000000000000000000
+        ItemAppearanceObjects.ItemObjects.Text.WordWrap = True
+        ItemAppearanceObjects.ItemObjects.Text.TextColor = claTeal
+        ItemAppearanceObjects.ItemObjects.Detail.WordWrap = True
+        ItemAppearanceObjects.ItemObjects.Detail.TextColor = claRoyalblue
       end
     end
     object TabResolucion: TTabItem
@@ -959,20 +972,100 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
       Text = 'TabResolucion'
       ExplicitSize.cx = 99.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
-      object ToolBar5: TToolBar
+      object lst9: TListBox
+        Align = Top
+        Position.Y = 48.000000000000000000
+        Size.Width = 405.000000000000000000
+        Size.Height = 41.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        DisableFocusEffect = True
+        DefaultItemStyles.ItemStyle = ''
+        DefaultItemStyles.GroupHeaderStyle = ''
+        DefaultItemStyles.GroupFooterStyle = ''
+        Viewport.Width = 401.000000000000000000
+        Viewport.Height = 37.000000000000000000
+        object ListBoxItem31: TListBoxItem
+          Size.Width = 401.000000000000000000
+          Size.Height = 33.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Filtro :'
+          object DateEdit1: TDateEdit
+            Date = 43568.000000000000000000
+            Position.X = 160.000000000000000000
+            Position.Y = 5.000000000000000000
+            TabOrder = 0
+          end
+          object cb1: TComboBox
+            Items.Strings = (
+              'NINGUNO'
+              'FECHA')
+            ItemIndex = 0
+            Padding.Left = 5.000000000000000000
+            Padding.Top = 5.000000000000000000
+            Padding.Right = 5.000000000000000000
+            Padding.Bottom = 5.000000000000000000
+            Position.X = 48.000000000000000000
+            Position.Y = 3.000000000000000000
+            Size.Width = 97.000000000000000000
+            Size.Height = 25.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 2
+          end
+          object btn11: TButton
+            Align = Right
+            Position.X = 321.000000000000000000
+            Size.Width = 80.000000000000000000
+            Size.Height = 33.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 4
+            Text = 'Buscar'
+          end
+        end
+      end
+      object tlb1: TToolBar
         Size.Width = 405.000000000000000000
         Size.Height = 48.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
-        object lblTitle5: TLabel
+        object Label1: TLabel
           Align = Contents
           Size.Width = 405.000000000000000000
           Size.Height = 48.000000000000000000
           Size.PlatformDefault = False
           StyleLookup = 'toollabel'
           TextSettings.HorzAlign = Center
-          Text = 'Title'
+          Text = 'Resoluciones'
         end
+        object btn10: TSpeedButton
+          Align = Left
+          Padding.Left = 2.000000000000000000
+          Padding.Top = 2.000000000000000000
+          Padding.Right = 2.000000000000000000
+          Padding.Bottom = 2.000000000000000000
+          Size.Width = 57.000000000000000000
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'refreshtoolbutton'
+          Text = 'btn7'
+          OnClick = btn10Click
+        end
+      end
+      object lvResoluciones: TListView
+        ItemAppearanceClassName = 'TImageListItemBottomDetailRightButtonAppearance'
+        ItemEditAppearanceClassName = 'TImageListItemBottomDetailRightButtonShowCheckAppearance'
+        HeaderAppearanceClassName = 'TListHeaderObjects'
+        FooterAppearanceClassName = 'TListHeaderObjects'
+        Align = Client
+        Size.Width = 405.000000000000000000
+        Size.Height = 496.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        ItemAppearanceObjects.ItemObjects.Text.WordWrap = True
+        ItemAppearanceObjects.ItemObjects.Text.TextColor = claTeal
+        ItemAppearanceObjects.ItemObjects.Detail.WordWrap = True
+        ItemAppearanceObjects.ItemObjects.Detail.TextColor = claRoyalblue
       end
     end
   end
@@ -1396,8 +1489,8 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 329
-    Top = 282
+    Left = 313
+    Top = 58
     object fdSolicitudid: TIntegerField
       DisplayLabel = '#'
       FieldName = 'id'
@@ -1450,9 +1543,6 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
     object fdSolicitudlinea_credito_id: TIntegerField
       FieldName = 'linea_credito_id'
     end
-    object fdSolicitudcliente_full_name: TStringField
-      FieldName = 'cliente_full_name'
-    end
     object fdSolicitudcliente_dni: TStringField
       FieldName = 'cliente_dni'
     end
@@ -1485,6 +1575,8 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
     end
     object fdSolicitudmonto: TFloatField
       FieldName = 'monto'
+      DisplayFormat = '#,##0'
+      currency = True
     end
     object fdSolicitudtipo_info_detalle: TMemoField
       FieldName = 'tipo_info_detalle'
@@ -1511,6 +1603,11 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
     end
     object fdSolicitudnro_solicitud: TStringField
       FieldName = 'nro_solicitud'
+      OnGetText = fdSolicitudnro_solicitudGetText
+    end
+    object fdSolicitudcliente_full_name: TStringField
+      FieldName = 'cliente_full_name'
+      Size = 50
     end
   end
   object BindSourceDB1: TBindSourceDB
@@ -1632,28 +1729,42 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
       FillHeaderExpressions = <>
       FillBreakGroups = <>
     end
+    object LinkListControlToField1: TLinkListControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB1
+      FieldName = 'cliente_full_name'
+      Control = lvSolicitudes
+      FillExpressions = <
+        item
+          SourceMemberName = 'monto'
+          ControlMemberName = 'ButtonText'
+        end
+        item
+          SourceMemberName = 'estado'
+          ControlMemberName = 'Detail'
+        end>
+      FillHeaderExpressions = <>
+      FillHeaderFieldName = 'nro_solicitud'
+      FillBreakGroups = <>
+    end
     object LinkFillControlToField1: TLinkFillControlToField
       Category = 'Quick Bindings'
-      Control = lv1
+      Control = lvResoluciones
       Track = True
-      FillDataSource = BindSourceDB1
+      FillDataSource = BindSourceDB10
       FillDisplayFieldName = 'cliente_full_name'
       AutoFill = True
       FillExpressions = <
         item
-          SourceMemberName = 'cuota'
-          ControlMemberName = 'Detail2'
+          SourceMemberName = 'estado'
+          ControlMemberName = 'Detail'
         end
         item
           SourceMemberName = 'monto'
-          ControlMemberName = 'Detail3'
-        end
-        item
-          SourceMemberName = 'plazo'
-          ControlMemberName = 'Detail1'
+          ControlMemberName = 'ButtonText'
         end>
       FillHeaderExpressions = <>
-      FillHeaderFieldName = 'nro_solicitud'
+      FillHeaderFieldName = 'nro_resolucion'
       FillBreakGroups = <>
     end
   end
@@ -1705,14 +1816,76 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
     Left = 232
     Top = 328
   end
-  object Label1: TLabel
-    Position.X = 312.000000000000000000
-    Position.Y = 320.000000000000000000
-    Text = 'Label1'
+  object fdResolucion: TFDMemTable
+    FieldDefs = <>
+    IndexDefs = <>
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    StoreDefs = True
+    Left = 297
+    Top = 162
+    object fdResolucionid: TIntegerField
+      FieldName = 'id'
+    end
+    object fdResolucionsolicitud_id: TIntegerField
+      FieldName = 'solicitud_id'
+    end
+    object fdResolucionnro_resolucion: TIntegerField
+      FieldName = 'nro_resolucion'
+      OnGetText = fdResolucionnro_resolucionGetText
+    end
+    object fdResolucionestado: TStringField
+      FieldName = 'estado'
+    end
+    object fdResolucioncliente_full_name: TStringField
+      FieldName = 'cliente_full_name'
+    end
+    object fdResolucionempleado_full_name: TStringField
+      FieldName = 'empleado_full_name'
+    end
+    object fdResolucionmonto: TFloatField
+      FieldName = 'monto'
+      DisplayFormat = '#,##0.00'
+    end
+    object fdResolucioncuota: TFloatField
+      FieldName = 'cuota'
+      DisplayFormat = '#,##0.00'
+    end
+    object fdResolucionplazo: TIntegerField
+      FieldName = 'plazo'
+      DisplayFormat = '0'
+    end
+    object fdResolucioncomentario: TStringField
+      FieldName = 'comentario'
+    end
+    object fdResoluciontipo_interes: TStringField
+      FieldName = 'tipo_interes'
+    end
+    object fdResolucioninteres: TFloatField
+      FieldName = 'interes'
+    end
+    object fdResolucionahorro_inicial: TFloatField
+      FieldName = 'ahorro_inicial'
+    end
+    object fdResolucionahorro_programado: TFloatField
+      FieldName = 'ahorro_programado'
+    end
+    object fdResolucionplazo_maximo: TIntegerField
+      FieldName = 'plazo_maximo'
+    end
+    object fdResolucioncreated_at: TDateField
+      FieldName = 'created_at'
+    end
   end
-  object Label2: TLabel
-    Position.X = 336.000000000000000000
-    Position.Y = 328.000000000000000000
-    Text = 'Label2'
+  object BindSourceDB10: TBindSourceDB
+    DataSet = fdResolucion
+    ScopeMappings = <>
+    Left = 192
+    Top = 304
   end
 end

@@ -13,7 +13,7 @@ uses
   Fmx.Bind.DBEngExt, System.Rtti, System.Bindings.Outputs, Fmx.Bind.Editors,
   Data.Bind.DBScope, FMX.ListView.Types, FMX.ListView.Appearances,
   FMX.ListView.Adapters.Base, FMX.ListView, FMX.ScrollBox, FMX.Memo,
-  MultiDetailAppearanceU;
+  MultiDetailAppearanceU, FMX.DateTimeCtrls;
 
 type
   TTabbedwithNavigationForm = class(TForm)
@@ -35,8 +35,6 @@ type
     ToolBar4: TToolBar;
     lblTitle4: TLabel;
     TabResolucion: TTabItem;
-    ToolBar5: TToolBar;
-    lblTitle5: TLabel;
     GestureManager1: TGestureManager;
     ActionList1: TActionList;
     NextTabAction1: TNextTabAction;
@@ -74,7 +72,6 @@ type
     fdSolicitudperfil_cliente_id: TIntegerField;
     fdSolicitudlinea_credito: TStringField;
     fdSolicitudlinea_credito_id: TIntegerField;
-    fdSolicitudcliente_full_name: TStringField;
     fdSolicitudcliente_dni: TStringField;
     fdSolicitudtipo_prestamo_id: TIntegerField;
     fdSolicitudtipo_producto_id: TIntegerField;
@@ -173,11 +170,41 @@ type
     edComentario: TMemo;
     lst8: TListBox;
     ListBoxItem30: TListBoxItem;
-    lv1: TListView;
     btn7: TSpeedButton;
-    LinkFillControlToField1: TLinkFillControlToField;
+    lvSolicitudes: TListView;
+    LinkListControlToField1: TLinkListControlToField;
+    fdSolicitudcliente_full_name: TStringField;
+    cbFecha: TDateEdit;
+    cbbCriterio: TComboBox;
+    lst9: TListBox;
+    ListBoxItem31: TListBoxItem;
+    DateEdit1: TDateEdit;
+    cb1: TComboBox;
+    tlb1: TToolBar;
     Label1: TLabel;
-    Label2: TLabel;
+    btn10: TSpeedButton;
+    btn11: TButton;
+    btn8: TButton;
+    fdResolucion: TFDMemTable;
+    fdResolucionid: TIntegerField;
+    fdResolucionsolicitud_id: TIntegerField;
+    fdResolucionnro_resolucion: TIntegerField;
+    fdResolucionestado: TStringField;
+    fdResolucioncliente_full_name: TStringField;
+    fdResolucionempleado_full_name: TStringField;
+    fdResolucionmonto: TFloatField;
+    fdResolucioncuota: TFloatField;
+    fdResolucionplazo: TIntegerField;
+    fdResolucioncomentario: TStringField;
+    fdResoluciontipo_interes: TStringField;
+    fdResolucioninteres: TFloatField;
+    fdResolucionahorro_inicial: TFloatField;
+    fdResolucionahorro_programado: TFloatField;
+    fdResolucionplazo_maximo: TIntegerField;
+    lvResoluciones: TListView;
+    BindSourceDB10: TBindSourceDB;
+    LinkFillControlToField1: TLinkFillControlToField;
+    fdResolucioncreated_at: TDateField;
     procedure GestureDone(Sender: TObject; const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
@@ -196,6 +223,17 @@ type
       const Item: TListBoxItem);
     procedure btn6Click(Sender: TObject);
     procedure btn7Click(Sender: TObject);
+    procedure LinkPropertyToFieldText2AssignedValue(Sender: TObject;
+      AssignValueRec: TBindingAssignValueRec; const Value: TValue);
+    procedure fdSolicitudcliente_full_nameGetText(Sender: TField;
+      var Text: string; DisplayText: Boolean);
+    procedure fdSolicitudnro_solicitudGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure btn8Click(Sender: TObject);
+    procedure btn11Click(Sender: TObject);
+    procedure btn10Click(Sender: TObject);
+    procedure fdResolucionnro_resolucionGetText(Sender: TField;
+      var Text: string; DisplayText: Boolean);
   private
     { Private declarations }
     function Login(email,clave:string):Boolean;
@@ -210,8 +248,9 @@ type
     perfil_cliente_tipo_producto_id,garantia_id:Variant;comentario:string;
     activo:boolean;avales:TJsonArray;tipoInfo:TJSONArray;aIncial,aProgramado:Real;tipo_interes:string);
     function GridToJsonArray(lista: TListview): TJsonArray;
-    procedure listarSolictidu();
+    procedure listarSolicitud();
     var paginaActual:integer;
+    procedure listarResolucion();
   public
     { Public declarations }
   end;
@@ -226,6 +265,48 @@ uses
 
 {$R *.fmx}
 {$R *.LgXhdpiPh.fmx ANDROID}
+
+procedure TTabbedwithNavigationForm.listarResolucion();
+var graph:Tgraph;
+var variables:TJSONObject;
+var data,dataVar,query:TJSONObject;
+var orden,page:Integer;
+var tipo_bien:string;
+var resultado:TJsonObject;
+begin
+    resultado:=TJSONObject.Create;
+    graph:=TGraph.Create(dmDataMovil.RESTClient1,fdResolucion);
+    try
+    graph.query:='query verResolucion($nro_resolucion:String,$created_at:String) { resolucionQuery'+
+    '(nro_resolucion:$nro_resolucion,created_at:$created_at) { data '+
+    '{ id,solicitud_id,nro_resolucion,estado,cliente_full_name,empleado_full_name,monto,'+
+    'cuota,plazo,comentario,tipo_interes,interes,ahorro_inicial,ahorro_programado,plazo_maximo,created_at } }}';
+
+    variables:=TJSONObject.Create;
+    dataVar:=TJSONObject.Create;
+//    dataVar.AddPair('limit',TJSONNumber.Create(cbbRegistros.Items[cbbRegistros.ItemIndex]));
+    dataVar.AddPair('per_page',TJSONNumber.Create(paginaActual));
+     if cb1.ItemIndex>0 then
+     begin
+       case cb1.ItemIndex of
+        1:dataVar.AddPair('created_at',TJSONString.Create(DateToStr(cbFecha.Date)));
+       end;
+     end;
+    variables.AddPair('variables',dataVar);
+    graph.variables:=variables;
+
+    graph.variables:=variables;
+
+    graph.rootElement:='data.resolucionQuery.data'; // cambiar por el nombre del Query que buscas linea_creditoQuery
+
+    resultado:=graph.ejecutar('resolucionQuery');  // cambiar por el nombre del Query que buscas linea_creditoQuery
+//    lblPaginaActual.Caption:=paginaActual.ToString;
+//    lblTotalPagina.Caption:= graph.totalPag.ToString;
+    finally
+       FreeAndNil(resultado);
+       FreeAndNil(graph);
+    end;
+end;
 
 function TTabbedwithNavigationForm.GridToJsonArray(lista: TListview): TJsonArray;
 var
@@ -245,6 +326,12 @@ begin
       result.AddElement(item);
    end;
    ShowMessage(result.ToString);
+end;
+
+procedure TTabbedwithNavigationForm.LinkPropertyToFieldText2AssignedValue(
+  Sender: TObject; AssignValueRec: TBindingAssignValueRec; const Value: TValue);
+begin
+    //Value.AsString:='hola '+value;
 end;
 
 procedure TTabbedwithNavigationForm.NuevaSolicitud(empleado_id,cliente_id:integer;interes,monto,plazo,cuota:real;
@@ -397,17 +484,16 @@ begin
   end;
 end;
 
-procedure TTabbedwithNavigationForm.listarSolictidu;
+procedure TTabbedwithNavigationForm.listarSolicitud;
 var graph:Tgraph;
 var variables:TJSONObject;
 var dataVar,dataRest,query:TJSONObject;
 var resultado:TJsonObject;
-var avales:widestring;
 begin
     resultado:=TJSONObject.Create;
     graph:=TGraph.Create(dmdataMOvil.RESTClient1,fdSolicitud);
     try  // Cambiar por el query a consultar, hacer pruebas en Insomnia
-    graph.query:='query solicitud { solicitudQuery { data {id,activo,monto,plazo,cuota,interes,'+
+    graph.query:='query solicitud($created_at:String) { solicitudQuery(created_at:$created_at) { data {id,activo,monto,plazo,cuota,interes,'+
     'comentario,reporte_ceop,reporte_ceop_id,reporte_info,reporte_info_id,cliente_full_name,garantia,garantia_id,empleado,'+
     'tipo_producto,tipo_producto_id,tipo_prestamo,tipo_prestamo_id,nro_solicitud,estado,'+
     'perfil_cliente,perfil_cliente_id,'+'linea_credito,linea_credito_id,cliente_dni,perfil_cliente_tipo_producto_id,'+
@@ -418,7 +504,12 @@ begin
     dataVar:=TJSONObject.Create;
 //    dataVar.AddPair('limit',TJSONNumber.Create(cbbRegistros.Items[cbbRegistros.ItemIndex]));
     dataVar.AddPair('per_page',TJSONNumber.Create(paginaActual));
-   // if length(edcriterio.Text)>0 then
+     if cbbCriterio.ItemIndex>0 then
+     begin
+       case cbbCriterio.ItemIndex of
+        1:dataVar.AddPair('created_at',TJSONString.Create(DateToStr(cbFecha.Date)));
+       end;
+     end;
    //    dataVar.AddPair('desc_linea_credito',TJSONString.Create(edCriterio.Text));// depende el campo en que busques
     variables.AddPair('variables',dataVar);
     graph.variables:=variables;
@@ -519,7 +610,7 @@ end;
 procedure TTabbedwithNavigationForm.lstDataItemClick(
   const Sender: TCustomListBox; const Item: TListBoxItem);
 begin
-InputBox('Ignrese monto?','','0.00',
+InputBox('Ingrese monto?','','0.00',
         procedure(const AResult: TModalResult; const AValue: string)
         begin
             case AResult of
@@ -549,6 +640,7 @@ ldes, lOrder, lLegal : TListItemText;
 boton: TlistItemTextButton;
 begin
                      itemList := lvAval.Items.Add;
+                     itemList.Height:=30;
                      itemList.Tag:=id;
                      ldes := itemList.Objects.FindObjectT<TListItemText>('descripcion');
                       lOrder := itemList.Objects.FindObjectT<TListItemText>('aval');
@@ -557,16 +649,30 @@ begin
                       lOrder.Text := tipo;
 end;
 
+procedure TTabbedwithNavigationForm.btn10Click(Sender: TObject);
+begin
+listarResolucion();
+end;
+
+procedure TTabbedwithNavigationForm.btn11Click(Sender: TObject);
+begin
+listarResolucion();
+end;
+
 procedure TTabbedwithNavigationForm.btn1Click(Sender: TObject);
 begin
  if Login(txtEmail.Text,txtpassword.Text) then
     begin
-    TabControl1.ActiveTab:=TabCalcular;
     TabLogin.Visible:=false;
+    TabCalcular.Visible:=True;
+    TabControl1.ActiveTab:=TabCalcular;
+    TabResolucion.Visible:=True;
+    TabSolicitud.Visible:=True;
      dmDataMovil.RESTRequest1.Execute;
     // uHelpers.PrimerElementoCombo(cbbLineaCredito);
      dmDataMovil.adapAhorro.Active;
      uHelpers.JsonToDataset(dmDataMovil.fdPerfilCliente,VarToStr(dmDataMovil.fdLineaCredito.FieldValues['perfil_cliente']));
+    llenarData();
     end
  else
    ShowMessage('error');
@@ -666,7 +772,7 @@ begin
         begin
           btnNuevoCliente.EnableD:=True;
         end;
-        llenarData();
+
 end;
 
 procedure TTabbedwithNavigationForm.btn5Click(Sender: TObject);
@@ -732,7 +838,12 @@ end;
 
 procedure TTabbedwithNavigationForm.btn7Click(Sender: TObject);
 begin
-listarSolictidu();
+listarSolicitud();
+end;
+
+procedure TTabbedwithNavigationForm.btn8Click(Sender: TObject);
+begin
+   listarSolicitud();
 end;
 
 procedure TTabbedwithNavigationForm.btnNuevoClienteClick(Sender: TObject);
@@ -780,9 +891,32 @@ begin
 //
 end;
 
+procedure TTabbedwithNavigationForm.fdResolucionnro_resolucionGetText(
+  Sender: TField; var Text: string; DisplayText: Boolean);
+begin
+   Text:='N°: '+Sender.AsString+' --> '+VarToStr(fdResolucion.FieldValues['created_at']);
+end;
+
+procedure TTabbedwithNavigationForm.fdSolicitudcliente_full_nameGetText(
+  Sender: TField; var Text: string; DisplayText: Boolean);
+begin
+//Text:='Cliente: '+ Sender.AsString;
+end;
+
+procedure TTabbedwithNavigationForm.fdSolicitudnro_solicitudGetText(
+  Sender: TField; var Text: string; DisplayText: Boolean);
+begin
+ Text:='N°: '+Sender.AsString+' --> '+VarToStr(fdSolicitud.FieldValues['created_at']);
+end;
+
+
+
 procedure TTabbedwithNavigationForm.FormCreate(Sender: TObject);
 begin
   { This defines the default active tab at runtime }
+  TabCalcular.Visible:=False;
+  TabSolicitud.Visible:=False;
+  TabResolucion.Visible:=False;
   TabControl1.ActiveTab := TabLogin;
 end;
 
