@@ -3,7 +3,7 @@ unit uHelpers;
 interface
 uses System.JSON,FireDAC.Comp.Client,Data.DB,SysUtils,Rest.Json,System.Math,
 REST.Client,REST.Response.Adapter,System.IniFiles,System.classes,System.IOUtils,
-Variants;
+Variants,FMX.ListBox,FMX.Types;
 
 procedure InsertarRegistroDataset(datajson:TJsonObject;dataset:TFDmemtable);
 function calcularTotales(interes:real=0;monto:real=0;plazo:real=0):TJsonArray;
@@ -19,13 +19,13 @@ procedure JsonToDataset(aDataset : TDataSet; aJSON : string);
 //procedure RendicionParalelo(monto,plazo,interes:real); overload;
 //procedure llenarGridAhorro(inicial,monto,programado,cuota_mensual:real;plazo:integer;grid:TcxGridBandedTableView);
 function calcularAhorro(monto:real;plazo:integer;interes:real;dataset: TFdMemTable=nil;plazo_maximo:integer=0):real;
-//procedure llenarGridResumen(datos:TJsonArray;grid:TcxGridBandedTableView);
+procedure llenarGridResumen(datos:TJsonArray;lista:TListBox);
 //procedure llenarGridCuota(capital_mes,i_soles_mensual,monto,programado:real;plazo:integer);
 procedure calcularCuota(monto:real;plazo:integer;interes:real;dataset: TFdMemTable=nil);
 procedure calcularRendicion(monto:real;plazo:integer;interes:real;dataset: TFdMemTable=nil);
 //procedure llenarGridRendicion(capital_mes,i_soles_mensual,monto,programado:real;plazo:integer);
-function calcularParametrosRebatir(monto,plazo,interes:real):real;
-//procedure llenarGridRebatir(cuota, monto, interes: real;plazo:byte);
+function calcularParametrosRebatir(lista:TListBox;monto,plazo,interes:real):real;
+procedure llenarGridRebatir(lista:TListBox;cuota, monto, interes: real;plazo:byte);
 procedure datosAhorro(dataset:TFDmemtable=nil);
 function calcularAhorroResolucion(monto:real;plazo:integer;interes:real;inicial,programado:real):real;
 //procedure habilitarPermisos(form:TForm;per:TJSONArray);
@@ -141,40 +141,118 @@ begin
     end;
   end;
 end;
-{
-procedure llenarGridRebatir(grid: TcxGridBandedTableView;cuota, monto, interes: real;plazo:byte);
+
+procedure llenarGridRebatir(lista: TListBox;cuota, monto, interes: real;plazo:byte);
 var i:byte;
 var m_interes,m_cuota,m_amortizacion,m_saldo:real;
+var listItem:TListBoxItem;
 begin
-     grid.BeginUpdate();
+
   try
-    grid.DataController.RecordCount:=0;
-    grid.DataController.RecordCount:=plazo+1;
+  //  grid.DataController.RecordCount:=0;
+//    grid.DataController.RecordCount:=plazo+1;
     m_saldo:=monto;
     m_interes:=0;
     m_amortizacion:=0;
     m_cuota:=0;
-   for i:=0 to grid.DataController.RecordCount-1 do
+    lista.Items.Clear;
+    lista.Columns:=5;
+   listItem:= TListBoxItem.Create(lista);
+    listItem.Parent:=lista;
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Center;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.text:='#';
+
+   listItem:= TListBoxItem.Create(lista);
+    listItem.Parent:=lista;
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Center;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.text:='Saldo';
+
+    listItem:= TListBoxItem.Create(lista);
+    listItem.Parent:=lista;
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Center;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.text:='Interes';
+
+
+    listItem:= TListBoxItem.Create(lista);
+    listItem.Parent:=lista;
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Center;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.text:='Amortizacion';
+
+    listItem:= TListBoxItem.Create(lista);
+    listItem.Parent:=lista;
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Center;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.text:='Cuota';
+   for i:=0 to plazo do
    begin
+    listItem:= TListBoxItem.Create(lista);
+    listItem.Parent:=lista;
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Center;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.text:=i.ToString;
+
+   listItem:= TListBoxItem.Create(lista);
+    listItem.Parent:=lista;
+    listItem.Height:=30;
+     listItem.TextSettings.HorzAlign:=TTextAlign.Trailing;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+
+    listItem.text:=FormatFloat('#,##0.00',m_saldo);
+
+    listItem:= TListBoxItem.Create(lista);
+    listItem.Parent:=lista;
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Trailing;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.text:=FormatFloat('#,##0.00',m_interes);
+
+
+    listItem:= TListBoxItem.Create(lista);
+//    listItem.Parent:=lista;
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Trailing;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.text:=FormatFloat('#,##0.00',m_amortizacion);
+    lista.AddObject(listItem);
+
+    listItem:= TListBoxItem.Create(lista);
+//    listItem.Parent:=lista;
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Trailing;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.text:=FormatFloat('#,##0.00',m_cuota);
+    lista.AddObject(listItem);
+     {
     grid.DataController.Values[i,0]:=i;
     grid.DataController.Values[i,1]:=m_saldo;
     grid.DataController.Values[i,2]:=m_interes;
     grid.DataController.Values[i,3]:=m_amortizacion;
-    grid.DataController.Values[i,4]:=m_cuota;
+    grid.DataController.Values[i,4]:=m_cuota;}
     m_interes:=(interes*m_saldo)/100;
     m_amortizacion:=RoundTo(cuota-m_interes,-2);
     m_saldo:=roundTo(m_saldo-m_amortizacion,-2);
     m_cuota:=cuota;
    end;
-    grid.DataController.Values[grid.DataController.RecordCount-1,1]:=RoundTo(abs(grid.DataController.Values[grid.DataController.RecordCount-1,1]),-1);
+//    grid.DataController.Values[grid.DataController.RecordCount-1,1]:=RoundTo(abs(grid.DataController.Values[grid.DataController.RecordCount-1,1]),-1);
   finally
-    grid.EndUpdate;
+//    grid.EndUpdate;
   end;
 end;
-}
-function calcularParametrosRebatir(monto,plazo,interes:real):real;
+
+function calcularParametrosRebatir(lista:TListBox;monto,plazo,interes:real):real;
 var interes_por,factor,i_soles_total,i_soles_anual,cuota_mensual,i_soles_mensual:real;
 var recordCount:integer;
+var listItem:TListBoxItem;
 begin
   cuota_mensual:=0;
   i_soles_total:=0;
@@ -189,27 +267,52 @@ begin
     i_soles_total:=plazo*(interes/100);
     i_soles_total:=roundTo(cuota_mensual*plazo,-2);
     // Grid Parametros Rebatir
-{    if not(grid1=nil) then
-    begin
-    grid1.DataController.RecordCount:=0;
-    grid1.DataController.RecordCount:=grid1.DataController.RecordCount+1;
-    grid1.DataController.Values[0,0]:='Interes anual';
-    grid1.DataController.Values[0,1]:=i_soles_anual;
-    grid1.DataController.RecordCount:=grid1.DataController.RecordCount+1;
-    grid1.DataController.Values[1,0]:='Interes mensual %';
-    grid1.DataController.Values[1,1]:=interes;
-    grid1.DataController.RecordCount:=grid1.DataController.RecordCount+1;
-    grid1.DataController.Values[2,0]:='Monto';
-    grid1.DataController.Values[2,1]:=monto;
-    grid1.DataController.RecordCount:=grid1.DataController.RecordCount+1;
-    grid1.DataController.Values[3,0]:='Plazo';
-    grid1.DataController.Values[3,1]:=plazo;
-    grid1.DataController.RecordCount:=grid1.DataController.RecordCount+1;
-    grid1.DataController.Values[4,0]:='Cuota';
-    grid1.DataController.Values[4,1]:=cuota_mensual;
-    end;
+
+    Lista.columns:=1;
+    lista.Items.Clear;
+    listItem:= TListBoxItem.Create(lista);
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Leading;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.ItemData.Text:='Interes anual';
+    listItem.ItemData.Detail:=FormatFloat('#,##0.00',i_soles_anual);
+    lista.AddObject(listItem);
+
+    listItem:= TListBoxItem.Create(lista);
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Leading;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.text:='Interes mensual %';
+    listItem.ItemData.Detail:=FormatFloat('#,##0.00',interes);
+    lista.AddObject(listItem);
+
+
+    listItem:= TListBoxItem.Create(lista);
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Leading;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.text:='Monto s/.';
+    listItem.ItemData.Detail:=FormatFloat('#,##0.00',monto);
+    lista.AddObject(listItem);
+
+   listItem:= TListBoxItem.Create(lista);
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Leading;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.text:='Plazo';
+    listItem.ItemData.Detail:=FormatFloat('0',plazo);
+    lista.AddObject(listItem);
+
+     listItem:= TListBoxItem.Create(lista);
+    listItem.Height:=30;
+    listItem.TextSettings.HorzAlign:=TTextAlign.Leading;
+    listItem.StyledSettings:= listItem.StyledSettings - [TStyledSetting.Other];
+    listItem.text:='Cuota';
+    listItem.ItemData.Detail:=FormatFloat('#,##0.00',cuota_mensual);
+    lista.AddObject(listItem);
+
     //Grid Factor Rebatir
-    if not(grid2=nil) then
+{    if not(grid2=nil) then
     begin
     grid2.DataController.RecordCount:=0;
     grid2.DataController.RecordCount:=grid2.DataController.RecordCount+1;
@@ -345,29 +448,33 @@ begin
 //  if not(grid=nil) then
 //     llenarGridCuota(capital_mes,i_soles_mensual,monto,programado,plazo,grid);
 end;
-{
-procedure llenarGridResumen(datos:TJsonArray;grid:TcxGridBandedTableView);
+
+procedure llenarGridResumen(datos:TJsonArray;lista:TListbox);
 var i:byte;
  LJsonValue : TJSONValue;
   item     : TJsonObject;
    size: integer;
    jpair:TJsonPair;
+   listItem: TlistBoxItem;
 begin
- //  grid.BeginUpdate();
   try
-    grid.DataController.RecordCount := TJSONArray(datos).Count;
-     Size := TJSONArray(datos).Count;
+    Size := TJSONArray(datos).Count;
+    lista.Columns:=1;
+    lista.Items.Clear;
    for i:=0 to pred(Size) do
    begin
     item := datos.Get(i) as TJsonObject;
-    grid.DataController.Values[i,0]:=item.Pairs[0].jsonvalue.value;
-    grid.DataController.Values[i,1]:=item.Pairs[1].jsonvalue.value;
+    listItem:= TListBoxItem.Create(lista);
+    listItem.Parent:=lista;
+    listItem.Height:=30;
+    listItem.itemData.text:=item.Pairs[0].jsonvalue.value;
+    listItem.itemData.detail:=FormatFloat('#,##0.00',item.Pairs[1].jsonvalue.value.ToDouble());
    end;
   finally
    // grid.EndUpdate;
   end;
 end;
- }
+
 function calcularAhorro(monto:real;plazo:integer;interes:real;dataset: TFdMemTable=nil;plazo_maximo:integer=0):real;
 var inicial,programado,i_acumulado,cuota_mensual,capital_mes,total_programado:real;
 var recordCount:integer;

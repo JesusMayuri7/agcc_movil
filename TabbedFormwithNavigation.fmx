@@ -2,7 +2,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
   Left = 0
   Top = 0
   Caption = 'Form56'
-  ClientHeight = 634
+  ClientHeight = 658
   ClientWidth = 405
   StyleBook = StyleBook1
   Visible = True
@@ -18,26 +18,26 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
     Align = Client
     FullSize = True
     Size.Width = 405.000000000000000000
-    Size.Height = 634.000000000000000000
+    Size.Height = 658.000000000000000000
     Size.PlatformDefault = False
     TabHeight = 49.000000000000000000
-    TabIndex = 2
+    TabIndex = 0
     TabOrder = 0
     TabPosition = PlatformDefault
     Sizes = (
       405s
-      585s
+      609s
       405s
-      585s
+      609s
       405s
-      585s
+      609s
       405s
-      585s)
+      609s)
     object TabCalcular: TTabItem
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 100.000000000000000000
       Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
@@ -52,22 +52,24 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
         Align = Client
         FullSize = True
         Size.Width = 405.000000000000000000
-        Size.Height = 585.000000000000000000
+        Size.Height = 609.000000000000000000
         Size.PlatformDefault = False
         TabHeight = 49.000000000000000000
-        TabIndex = 1
+        TabIndex = 0
         TabOrder = 0
         TabPosition = None
         Sizes = (
           405s
-          585s
+          609s
           405s
-          585s)
+          609s
+          405s
+          609s)
         object TabItem5: TTabItem
           CustomIcon = <
             item
             end>
-          IsSelected = False
+          IsSelected = True
           Size.Width = 8.000000000000000000
           Size.Height = 8.000000000000000000
           Size.PlatformDefault = False
@@ -108,7 +110,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
             Size.Width = 405.000000000000000000
             Size.Height = 105.000000000000000000
             Size.PlatformDefault = False
-            TabOrder = 1
+            TabOrder = 2
             DisableFocusEffect = True
             DefaultItemStyles.ItemStyle = ''
             DefaultItemStyles.GroupHeaderStyle = ''
@@ -172,7 +174,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
             Size.Width = 405.000000000000000000
             Size.Height = 73.000000000000000000
             Size.PlatformDefault = False
-            TabOrder = 2
+            TabOrder = 3
             Columns = 4
             DisableFocusEffect = True
             DefaultItemStyles.ItemStyle = ''
@@ -291,7 +293,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
             Size.Width = 405.000000000000000000
             Size.Height = 39.000000000000000000
             Size.PlatformDefault = False
-            TabOrder = 3
+            TabOrder = 4
             Columns = 3
             DisableFocusEffect = True
             DefaultItemStyles.ItemStyle = ''
@@ -347,24 +349,40 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               end
             end
           end
-          object edComentario: TMemo
-            Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
-            DataDetectorTypes = []
-            Align = Bottom
-            Position.Y = 535.000000000000000000
+          object lstResumen: TListBox
+            Align = Top
+            Position.Y = 265.000000000000000000
             Size.Width = 405.000000000000000000
-            Size.Height = 50.000000000000000000
+            Size.Height = 248.000000000000000000
             Size.PlatformDefault = False
-            TabOrder = 4
+            TabOrder = 5
+            DisableFocusEffect = True
+            DefaultItemStyles.ItemStyle = 'listboxitemrightdetail'
+            DefaultItemStyles.GroupHeaderStyle = ''
+            DefaultItemStyles.GroupFooterStyle = ''
             Viewport.Width = 401.000000000000000000
-            Viewport.Height = 46.000000000000000000
+            Viewport.Height = 244.000000000000000000
+          end
+          object lstAdicional: TListBox
+            Align = Client
+            Size.Width = 405.000000000000000000
+            Size.Height = 96.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'lstDataStyle1'
+            TabOrder = 1
+            DisableFocusEffect = True
+            DefaultItemStyles.ItemStyle = ''
+            DefaultItemStyles.GroupHeaderStyle = ''
+            DefaultItemStyles.GroupFooterStyle = ''
+            Viewport.Width = 401.000000000000000000
+            Viewport.Height = 92.000000000000000000
           end
         end
         object TabItem6: TTabItem
           CustomIcon = <
             item
             end>
-          IsSelected = True
+          IsSelected = False
           Size.Width = 8.000000000000000000
           Size.Height = 8.000000000000000000
           Size.PlatformDefault = False
@@ -400,7 +418,10 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               StyleLookup = 'backtoolbutton'
             end
             object btn6: TSpeedButton
+              Action = NextTabAction1
               Align = Right
+              Enabled = True
+              ImageIndex = -1
               Padding.Left = 5.000000000000000000
               Padding.Top = 5.000000000000000000
               Padding.Right = 5.000000000000000000
@@ -409,8 +430,6 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               Size.Width = 61.000000000000000000
               Size.Height = 40.000000000000000000
               Size.PlatformDefault = False
-              Text = 'Crear'
-              OnClick = btn6Click
             end
           end
           object lst5: TListBox
@@ -602,70 +621,13 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               end
             end
           end
-          object lvAval: TListView
-            ItemAppearanceClassName = 'TDynamicAppearance'
-            ItemEditAppearanceClassName = 'TDynamicAppearance'
-            HeaderAppearanceClassName = 'TListHeaderObjects'
-            FooterAppearanceClassName = 'TListHeaderObjects'
-            Align = Top
-            Position.Y = 225.000000000000000000
-            Size.Width = 405.000000000000000000
-            Size.Height = 72.000000000000000000
-            Size.PlatformDefault = False
-            TabOrder = 3
-            ItemAppearanceObjects.ItemObjects.ObjectsCollection = <
-              item
-                AppearanceObjectName = 'descripcion'
-                AppearanceClassName = 'TTextObjectAppearance'
-                Appearance.TextAlign = Leading
-                Appearance.Width = 250.000000000000000000
-                Appearance.Height = 44.000000000000000000
-                Appearance.VertAlign = Center
-              end
-              item
-                AppearanceObjectName = 'aval'
-                AppearanceClassName = 'TTextObjectAppearance'
-                Appearance.Width = 100.000000000000000000
-                Appearance.Height = 44.000000000000000000
-                Appearance.PlaceOffset.X = 248.000000000000000000
-              end
-              item
-                AppearanceObjectName = 'boton'
-                AppearanceClassName = 'TTextButtonObjectAppearance'
-                Appearance.ButtonType = Delete
-                Appearance.Width = 50.000000000000000000
-                Appearance.Align = Trailing
-                Appearance.Text = 'Borrar'
-              end>
-            ItemAppearanceObjects.ItemEditObjects.ObjectsCollection = <
-              item
-                AppearanceObjectName = 'Text1'
-                AppearanceClassName = 'TTextObjectAppearance'
-              end>
-            OnButtonClick = lvAvalButtonClick
-          end
-          object lstData: TListBox
-            Align = Client
-            Size.Width = 405.000000000000000000
-            Size.Height = 160.000000000000000000
-            Size.PlatformDefault = False
-            StyleLookup = 'lstDataStyle1'
-            TabOrder = 4
-            DisableFocusEffect = True
-            DefaultItemStyles.ItemStyle = 'listboxitemrightdetail'
-            DefaultItemStyles.GroupHeaderStyle = ''
-            DefaultItemStyles.GroupFooterStyle = ''
-            OnItemClick = lstDataItemClick
-            Viewport.Width = 401.000000000000000000
-            Viewport.Height = 156.000000000000000000
-          end
           object lst7: TListBox
             Align = Top
             Position.Y = 297.000000000000000000
             Size.Width = 405.000000000000000000
             Size.Height = 128.000000000000000000
             Size.PlatformDefault = False
-            TabOrder = 5
+            TabOrder = 3
             DisableFocusEffect = True
             DefaultItemStyles.ItemStyle = ''
             DefaultItemStyles.GroupHeaderStyle = ''
@@ -751,6 +713,124 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
                 TabOrder = 0
               end
             end
+          end
+          object lvAval: TListView
+            ItemAppearanceClassName = 'TDynamicAppearance'
+            ItemEditAppearanceClassName = 'TDynamicAppearance'
+            HeaderAppearanceClassName = 'TListHeaderObjects'
+            FooterAppearanceClassName = 'TListHeaderObjects'
+            Align = Top
+            Position.Y = 225.000000000000000000
+            Size.Width = 405.000000000000000000
+            Size.Height = 72.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 4
+            ItemAppearanceObjects.ItemObjects.ObjectsCollection = <
+              item
+                AppearanceObjectName = 'descripcion'
+                AppearanceClassName = 'TTextObjectAppearance'
+                Appearance.TextAlign = Leading
+                Appearance.Width = 250.000000000000000000
+                Appearance.Height = 44.000000000000000000
+                Appearance.VertAlign = Center
+              end
+              item
+                AppearanceObjectName = 'aval'
+                AppearanceClassName = 'TTextObjectAppearance'
+                Appearance.Width = 100.000000000000000000
+                Appearance.Height = 44.000000000000000000
+                Appearance.PlaceOffset.X = 248.000000000000000000
+              end
+              item
+                AppearanceObjectName = 'boton'
+                AppearanceClassName = 'TTextButtonObjectAppearance'
+                Appearance.ButtonType = Delete
+                Appearance.Width = 50.000000000000000000
+                Appearance.Align = Trailing
+                Appearance.Text = 'Borrar'
+              end>
+            ItemAppearanceObjects.ItemEditObjects.ObjectsCollection = <
+              item
+                AppearanceObjectName = 'Text1'
+                AppearanceClassName = 'TTextObjectAppearance'
+              end>
+            OnButtonClick = lvAvalButtonClick
+          end
+        end
+        object TabItem3: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 8.000000000000000000
+          Size.Height = 8.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'TabItem3'
+          object lstData: TListBox
+            Align = Client
+            Size.Width = 405.000000000000000000
+            Size.Height = 511.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'lstDataStyle1'
+            TabOrder = 1
+            DisableFocusEffect = True
+            DefaultItemStyles.ItemStyle = 'listboxitemrightdetail'
+            DefaultItemStyles.GroupHeaderStyle = ''
+            DefaultItemStyles.GroupFooterStyle = ''
+            OnItemClick = lstDataItemClick
+            Viewport.Width = 401.000000000000000000
+            Viewport.Height = 507.000000000000000000
+          end
+          object tlb2: TToolBar
+            Size.Width = 405.000000000000000000
+            Size.Height = 48.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            object Label2: TLabel
+              Align = Contents
+              Size.Width = 405.000000000000000000
+              Size.Height = 48.000000000000000000
+              Size.PlatformDefault = False
+              StyleLookup = 'toollabel'
+              TextSettings.HorzAlign = Center
+              Text = 'Title'
+            end
+            object btn9: TSpeedButton
+              Align = Right
+              Margins.Right = 5.000000000000000000
+              Position.X = 340.000000000000000000
+              Size.Width = 60.000000000000000000
+              Size.Height = 48.000000000000000000
+              Size.PlatformDefault = False
+              Text = 'Crear'
+              OnClick = btn9Click
+            end
+            object btn12: TSpeedButton
+              Action = PreviousTabAction1
+              Align = Left
+              Enabled = True
+              ImageIndex = -1
+              Margins.Left = 5.000000000000000000
+              Position.X = 5.000000000000000000
+              Size.Width = 67.000000000000000000
+              Size.Height = 48.000000000000000000
+              Size.PlatformDefault = False
+              StyleLookup = 'backtoolbutton'
+            end
+          end
+          object edComentario: TMemo
+            Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+            DataDetectorTypes = []
+            Align = Bottom
+            Position.Y = 559.000000000000000000
+            Size.Width = 405.000000000000000000
+            Size.Height = 50.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 2
+            Viewport.Width = 401.000000000000000000
+            Viewport.Height = 46.000000000000000000
           end
         end
       end
@@ -854,7 +934,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 100.000000000000000000
       Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
@@ -950,7 +1030,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
         FooterAppearanceClassName = 'TListHeaderObjects'
         Align = Client
         Size.Width = 405.000000000000000000
-        Size.Height = 496.000000000000000000
+        Size.Height = 520.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 2
         ItemAppearanceObjects.ItemObjects.Text.WordWrap = True
@@ -1059,7 +1139,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
         FooterAppearanceClassName = 'TListHeaderObjects'
         Align = Client
         Size.Width = 405.000000000000000000
-        Size.Height = 496.000000000000000000
+        Size.Height = 520.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 2
         ItemAppearanceObjects.ItemObjects.Text.WordWrap = True
@@ -1489,8 +1569,8 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 313
-    Top = 58
+    Left = 185
+    Top = 146
     object fdSolicitudid: TIntegerField
       DisplayLabel = '#'
       FieldName = 'id'

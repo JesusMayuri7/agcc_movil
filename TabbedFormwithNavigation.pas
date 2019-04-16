@@ -205,6 +205,13 @@ type
     BindSourceDB10: TBindSourceDB;
     LinkFillControlToField1: TLinkFillControlToField;
     fdResolucioncreated_at: TDateField;
+    TabItem3: TTabItem;
+    tlb2: TToolBar;
+    Label2: TLabel;
+    btn9: TSpeedButton;
+    btn12: TSpeedButton;
+    lstResumen: TListBox;
+    lstAdicional: TListBox;
     procedure GestureDone(Sender: TObject; const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
@@ -234,6 +241,7 @@ type
     procedure btn10Click(Sender: TObject);
     procedure fdResolucionnro_resolucionGetText(Sender: TField;
       var Text: string; DisplayText: Boolean);
+    procedure btn9Click(Sender: TObject);
   private
     { Private declarations }
     function Login(email,clave:string):Boolean;
@@ -251,6 +259,7 @@ type
     procedure listarSolicitud();
     var paginaActual:integer;
     procedure listarResolucion();
+    procedure CrearSolicitud();
   public
     { Public declarations }
   end;
@@ -700,23 +709,26 @@ begin
         // pgcRebatir.TabVisible:=false;
         // pgcSimple.TabVisible:=true;
          calculos:=uHelpers.calcularTotales(interes,txtMonto.Text.ToDouble,txtPlazo.Text.ToDouble());
-        // uHelpers.llenarGridResumen(calculos,gridTotales);
+         uHelpers.llenarGridResumen(calculos,lstResumen);
          cuota:=uHelpers.calcularAhorro(txtMonto.Text.ToDouble,txtPlazo.Text.ToInteger,interes,dmDataMovil.fdAhorro,plazo_maximo);
+         lstAdicional.Items.Clear;
 //         uHelpers.calcularCuota(spnMonto.value,spnPlazo.Value,interes,dmdata.fdAhorro,gridCuota);
 //         uHelpers.calcularRendicion(spnMonto.value,spnPlazo.Value,interes,dmdata.fdAhorro,gridRendicion);
           end;
      if dmDataMovil.fdLineaCredito.FieldValues['tipo_interes']='PARALELO' then
          begin
          calculos:=uHelpers.calcularTotales(interes,txtMonto.Text.ToDouble,txtPlazo.Text.ToInteger());
-  //       uHelpers.llenarGridResumen(calculos,gridTotales);
+         uHelpers.llenarGridResumen(calculos,lstResumen);
          cuota:=uHelpers.calcularAhorro(txtMonto.Text.ToDouble,txtPlazo.Text.ToInteger,interes,dmDataMovil.fdAhorro,plazo_maximo);
 //         uHelpers.calcularCuota(spnMonto.value,spnPlazo.Value,interes,nil,gridCuota);
 //         uHelpers.calcularRendicion(spnMonto.value,spnPlazo.Value,interes,nil,gridRendicion);
+         lstAdicional.Items.Clear;
           end;
       if dmDataMovil.fdLineaCredito.FieldValues['tipo_interes']='REBATIR' then
          begin
-         cuota:=uHelpers.calcularParametrosRebatir(txtMonto.Text.ToDouble,txtPlazo.Text.ToInteger,interes);
-//         uHelpers.llenarGridRebatir(gridCuotasRebatir,cuota,spnMonto.Value,interes,spnPlazo.Value);
+         cuota:=uHelpers.calcularParametrosRebatir(lstResumen,txtMonto.Text.ToDouble,txtPlazo.Text.ToInteger,interes);
+         //
+         uHelpers.llenarGridRebatir(lstAdicional,cuota,txtMonto.Text.ToDouble,interes,txtPlazo.Text.ToInteger());
          end;
      txtCuota.Text:=FloatTostr(cuota);
    end;
@@ -846,6 +858,11 @@ begin
    listarSolicitud();
 end;
 
+procedure TTabbedwithNavigationForm.btn9Click(Sender: TObject);
+begin
+CrearSolicitud();
+end;
+
 procedure TTabbedwithNavigationForm.btnNuevoClienteClick(Sender: TObject);
 var cliente:TJSONObject;
 id:string;
@@ -884,6 +901,60 @@ end;
 procedure TTabbedwithNavigationForm.cbbPerfilClienteClosePopup(Sender: TObject);
 begin
 uHelpers.JsonToDataset(dmDataMovil.fdTipoProducto,VarToStr(dmDataMovil.fdPerfilCliente.FieldValues['tipo_producto']));
+end;
+
+procedure TTabbedwithNavigationForm.CrearSolicitud;
+var
+    IdReporteCeop,IdReporteInforCorp,IdTipoPrestamo,IdGiroNegocio,IdGarantia: Variant;
+    aInicial,aProgramado:real;
+    interes:Extended;
+begin
+  //btnGuardar.Enabled:=false;
+  IdReporteCeop:=null;
+  IdReporteInforCorp:=null;
+  IdGiroNegocio:=null;
+  IdTipoPrestamo:=null;
+  IdGarantia:=null;
+ if TryStrToFloat(lblInteres.Text,interes) then
+    begin
+        if (Length(linkReporteCeop.BindList.GetSelectedValue.ToString)>0) AND (linkReporteCeop.BindList.GetSelectedValue.ToString<>'(empty)') then
+           IdReporteCeop:=linkReporteCeop.BindList.GetSelectedValue.ToString.ToInteger;
+        if (Length(LinkReporteInforCorp.BindList.GetSelectedValue.AsString)>0) AND (LinkReporteInforCorp.BindList.GetSelectedValue.ToString<>'(empty)') then
+           idReporteInforCorp:=LinkReporteInforCorp.BindList.GetSelectedValue.AsString.ToInteger;
+        if (Length(LinkGiroNegocio.BindList.GetSelectedValue.AsString)>0) AND (LinkGiroNegocio.BindList.GetSelectedValuE.ToString<>'(empty)') then
+           IdGiroNegocio:=LinkGiroNegocio.BindList.GetSelectedValue.AsString.ToInteger;
+        if (Length(LinkTipoPrestamo.BindList.GetSelectedValue.AsString)>0) and (LinkTipoPrestamo.BindList.GetSelectedValue.ToString<>'(empty)') then
+           IdTipoPrestamo:=LinkTipoPrestamo.BindList.GetSelectedValue.AsString.ToInteger;
+        if (Length(LinkGarantia.BindList.GetSelectedValue.AsString)>0) and (LinkGarantia.BindList.GetSelectedValue.ToString<>'(empty)') then
+           IdGarantia:=LinkGarantia.BindList.GetSelectedValue.AsString.ToInteger;
+        aInicial:=0;
+        aProgramado:=0;
+        interes:=lblInteres.Text.ToDouble;
+        if dmdataMovil.fdLineaCredito.FieldValues['tipo_interes']='SIMPLE' then
+            begin
+                uHelpers.datosAhorro(dmdataMovil.fdAhorro);
+                aInicial:=uHelpers.aInicial;
+                aProgramado:=uHelpers.aProgramado;
+            end;
+        if Tag>0 then
+          begin
+
+        //  EditarSolicitud(tag,interes,spnMonto.Value,spnPlazo.Value,spnCuota.Value,cbbReporteCeop.EditValue,cbbReporteInfo.EditValue,
+        //  cbbGiroNegocio.EditValue,cbbTipoPrestamo.EditValue,cbbTipoProducto.EditValue,cbbGarantia.EditValue,txtcomentario.Lines.Text,true,
+        //  gridToJsonArray(gridAvales),datasetToJsonArray2(dmdata.fdTipoInfo),aInicial,aProgramado,dmdata.fdLineaCredito.FieldValues['tipo_interes']);
+          end
+        else
+        begin
+//          procedure NuevaSolicitud(empleado_id,cliente_id:integer;interes,monto,plazo,cuota:real;
+//          reporte_ceop_id,reporte_info_id,giro_negocio_id,tipo_prestamo_id,
+//           perfil_cliente_tipo_producto_id,garantia_id:Variant;comentario:string;activo:boolean;avales:TJsonArray;
+//           aIncial,aProgramado:Real;tipo_interes:string);
+            NuevaSolicitud(1,txtDniCliente.Tag,interes,txtMonto.Text.ToDouble,txtPlazo.Text.ToInteger,txtCuota.Text.ToDouble,
+            IdReporteCeop,IdReporteInforCorp,
+            idGiroNegocio,IdTipoPrestamo,lblInteres.Tag,IdGarantia,
+            edComentario.Lines.Text,true,gridToJsonArray(lvAval),TipoInfoToArray(lstData),aInicial,aProgramado,dmdataMovil.fdLineaCredito.FieldValues['tipo_interes']);
+        end;
+    end;
 end;
 
 procedure TTabbedwithNavigationForm.eliminarAval;
