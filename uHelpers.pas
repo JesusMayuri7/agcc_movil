@@ -30,6 +30,7 @@ procedure datosAhorro(dataset:TFDmemtable=nil);
 function calcularAhorroResolucion(monto:real;plazo:integer;interes:real;inicial,programado:real):real;
 //procedure habilitarPermisos(form:TForm;per:TJSONArray);
 function cargarToken: string;
+procedure PrimerElementoCombo(combo:TComboBox);
 var
    {variables here}
    aInicial:Real=0;
@@ -39,6 +40,17 @@ implementation
 
 uses
   uAdapterJson, UGraph,  UDataMovil;
+
+procedure PrimerElementoCombo(combo:TComboBox);
+var
+  ARecordIndex: Integer;
+  AValue: Variant;
+begin
+    if combo.Items.Count>0 then
+       begin
+      combo.ItemIndex:=0;
+      end;
+end;
 
 function cargarToken: string;
 var

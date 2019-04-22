@@ -2,7 +2,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
   Left = 0
   Top = 0
   Caption = 'Form56'
-  ClientHeight = 658
+  ClientHeight = 618
   ClientWidth = 405
   StyleBook = StyleBook1
   Visible = True
@@ -18,21 +18,21 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
     Align = Client
     FullSize = True
     Size.Width = 405.000000000000000000
-    Size.Height = 658.000000000000000000
+    Size.Height = 618.000000000000000000
     Size.PlatformDefault = False
     TabHeight = 49.000000000000000000
     TabIndex = 0
     TabOrder = 0
-    TabPosition = PlatformDefault
+    TabPosition = Top
     Sizes = (
       405s
-      609s
+      569s
       405s
-      609s
+      569s
       405s
-      609s
+      569s
       405s
-      609s)
+      569s)
     object TabCalcular: TTabItem
       CustomIcon = <
         item
@@ -43,7 +43,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
       Size.PlatformDefault = False
       StyleLookup = 'TabCalcularStyle1'
       TabOrder = 0
-      Text = 'TabCalcular'
+      Text = 'Calcular'
       ExplicitSize.cx = 101.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       object TabControl2: TTabControl
@@ -52,7 +52,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
         Align = Client
         FullSize = True
         Size.Width = 405.000000000000000000
-        Size.Height = 609.000000000000000000
+        Size.Height = 569.000000000000000000
         Size.PlatformDefault = False
         TabHeight = 49.000000000000000000
         TabIndex = 0
@@ -60,11 +60,11 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
         TabPosition = None
         Sizes = (
           405s
-          609s
+          569s
           405s
-          609s
+          569s
           405s
-          609s)
+          569s)
         object TabItem5: TTabItem
           CustomIcon = <
             item
@@ -90,7 +90,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               Size.PlatformDefault = False
               StyleLookup = 'toollabel'
               TextSettings.HorzAlign = Center
-              Text = 'Title'
+              Text = 'Simulador'
             end
             object btnNext: TSpeedButton
               Action = NextTabAction1
@@ -102,6 +102,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               Size.Width = 60.000000000000000000
               Size.Height = 48.000000000000000000
               Size.PlatformDefault = False
+              StyleLookup = 'nexttoolbutton'
             end
           end
           object lst2: TListBox
@@ -170,7 +171,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
           end
           object lst3: TListBox
             Align = Top
-            Position.Y = 153.000000000000000000
+            Position.Y = 192.000000000000000000
             Size.Width = 405.000000000000000000
             Size.Height = 73.000000000000000000
             Size.PlatformDefault = False
@@ -279,6 +280,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               object txtCuota: TEdit
                 Touch.InteractiveGestures = [LongTap, DoubleTap]
                 TabOrder = 0
+                ReadOnly = True
                 Position.X = 16.000000000000000000
                 Position.Y = 4.000000000000000000
                 Size.Width = 73.000000000000000000
@@ -287,13 +289,41 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               end
             end
           end
+          object lstResumen: TListBox
+            Align = Top
+            Position.Y = 265.000000000000000000
+            Size.Width = 405.000000000000000000
+            Size.Height = 248.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 4
+            DisableFocusEffect = True
+            DefaultItemStyles.ItemStyle = 'listboxitemrightdetail'
+            DefaultItemStyles.GroupHeaderStyle = ''
+            DefaultItemStyles.GroupFooterStyle = ''
+            Viewport.Width = 401.000000000000000000
+            Viewport.Height = 244.000000000000000000
+          end
+          object lstAdicional: TListBox
+            Align = Client
+            Size.Width = 405.000000000000000000
+            Size.Height = 56.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'lstDataStyle1'
+            TabOrder = 1
+            DisableFocusEffect = True
+            DefaultItemStyles.ItemStyle = ''
+            DefaultItemStyles.GroupHeaderStyle = ''
+            DefaultItemStyles.GroupFooterStyle = ''
+            Viewport.Width = 401.000000000000000000
+            Viewport.Height = 52.000000000000000000
+          end
           object lst4: TListBox
             Align = Top
-            Position.Y = 226.000000000000000000
+            Position.Y = 153.000000000000000000
             Size.Width = 405.000000000000000000
             Size.Height = 39.000000000000000000
             Size.PlatformDefault = False
-            TabOrder = 4
+            TabOrder = 5
             Columns = 3
             DisableFocusEffect = True
             DefaultItemStyles.ItemStyle = ''
@@ -349,34 +379,6 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               end
             end
           end
-          object lstResumen: TListBox
-            Align = Top
-            Position.Y = 265.000000000000000000
-            Size.Width = 405.000000000000000000
-            Size.Height = 248.000000000000000000
-            Size.PlatformDefault = False
-            TabOrder = 5
-            DisableFocusEffect = True
-            DefaultItemStyles.ItemStyle = 'listboxitemrightdetail'
-            DefaultItemStyles.GroupHeaderStyle = ''
-            DefaultItemStyles.GroupFooterStyle = ''
-            Viewport.Width = 401.000000000000000000
-            Viewport.Height = 244.000000000000000000
-          end
-          object lstAdicional: TListBox
-            Align = Client
-            Size.Width = 405.000000000000000000
-            Size.Height = 96.000000000000000000
-            Size.PlatformDefault = False
-            StyleLookup = 'lstDataStyle1'
-            TabOrder = 1
-            DisableFocusEffect = True
-            DefaultItemStyles.ItemStyle = ''
-            DefaultItemStyles.GroupHeaderStyle = ''
-            DefaultItemStyles.GroupFooterStyle = ''
-            Viewport.Width = 401.000000000000000000
-            Viewport.Height = 92.000000000000000000
-          end
         end
         object TabItem6: TTabItem
           CustomIcon = <
@@ -403,7 +405,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               Size.PlatformDefault = False
               StyleLookup = 'toollabel'
               TextSettings.HorzAlign = Center
-              Text = 'Solicitud de Prestamo'
+              Text = 'Datios'
             end
             object btnBack: TSpeedButton
               Action = PreviousTabAction1
@@ -415,7 +417,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               Size.Width = 67.000000000000000000
               Size.Height = 40.000000000000000000
               Size.PlatformDefault = False
-              StyleLookup = 'backtoolbutton'
+              StyleLookup = 'priortoolbutton'
             end
             object btn6: TSpeedButton
               Action = NextTabAction1
@@ -430,6 +432,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               Size.Width = 61.000000000000000000
               Size.Height = 40.000000000000000000
               Size.PlatformDefault = False
+              StyleLookup = 'nexttoolbutton'
             end
           end
           object lst5: TListBox
@@ -768,10 +771,12 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
           StyleLookup = ''
           TabOrder = 0
           Text = 'TabItem3'
+          ExplicitSize.cx = 8.000000000000000000
+          ExplicitSize.cy = 8.000000000000000000
           object lstData: TListBox
             Align = Client
             Size.Width = 405.000000000000000000
-            Size.Height = 511.000000000000000000
+            Size.Height = 471.000000000000000000
             Size.PlatformDefault = False
             StyleLookup = 'lstDataStyle1'
             TabOrder = 1
@@ -781,7 +786,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
             DefaultItemStyles.GroupFooterStyle = ''
             OnItemClick = lstDataItemClick
             Viewport.Width = 401.000000000000000000
-            Viewport.Height = 507.000000000000000000
+            Viewport.Height = 467.000000000000000000
           end
           object tlb2: TToolBar
             Size.Width = 405.000000000000000000
@@ -795,7 +800,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               Size.PlatformDefault = False
               StyleLookup = 'toollabel'
               TextSettings.HorzAlign = Center
-              Text = 'Title'
+              Text = 'Negocio y Familia'
             end
             object btn9: TSpeedButton
               Align = Right
@@ -817,14 +822,14 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
               Size.Width = 67.000000000000000000
               Size.Height = 48.000000000000000000
               Size.PlatformDefault = False
-              StyleLookup = 'backtoolbutton'
+              StyleLookup = 'priortoolbutton'
             end
           end
           object edComentario: TMemo
             Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
             DataDetectorTypes = []
             Align = Bottom
-            Position.Y = 559.000000000000000000
+            Position.Y = 519.000000000000000000
             Size.Width = 405.000000000000000000
             Size.Height = 50.000000000000000000
             Size.PlatformDefault = False
@@ -845,7 +850,6 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
       Size.PlatformDefault = False
       StyleLookup = 'tabitemcontacts'
       TabOrder = 0
-      Text = 'TabLogin'
       ExplicitSize.cx = 102.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       object ToolBar3: TToolBar
@@ -940,7 +944,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
       Size.PlatformDefault = False
       StyleLookup = 'tabitemsearch'
       TabOrder = 0
-      Text = 'TabSolicitud'
+      Text = 'Solicitudes'
       ExplicitSize.cx = 101.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       object ToolBar4: TToolBar
@@ -1030,7 +1034,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
         FooterAppearanceClassName = 'TListHeaderObjects'
         Align = Client
         Size.Width = 405.000000000000000000
-        Size.Height = 520.000000000000000000
+        Size.Height = 480.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 2
         ItemAppearanceObjects.ItemObjects.Text.WordWrap = True
@@ -1049,7 +1053,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
       Size.PlatformDefault = False
       StyleLookup = 'tabitembookmarks'
       TabOrder = 0
-      Text = 'TabResolucion'
+      Text = 'Resoluciones'
       ExplicitSize.cx = 99.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       object lst9: TListBox
@@ -1139,7 +1143,7 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
         FooterAppearanceClassName = 'TListHeaderObjects'
         Align = Client
         Size.Width = 405.000000000000000000
-        Size.Height = 520.000000000000000000
+        Size.Height = 480.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 2
         ItemAppearanceObjects.ItemObjects.Text.WordWrap = True
@@ -1701,15 +1705,6 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
     OutputConverters = <>
     Left = 20
     Top = 5
-    object linkTipoProducto: TLinkListControlToField
-      Category = 'Quick Bindings'
-      DataSource = BindSourceDB4
-      FieldName = 'desc_tipo_producto'
-      Control = cbbTipoProducto
-      FillExpressions = <>
-      FillHeaderExpressions = <>
-      FillBreakGroups = <>
-    end
     object linkPerfilCliente: TLinkListControlToField
       Category = 'Quick Bindings'
       DataSource = BindSourceDB3
@@ -1845,6 +1840,22 @@ object TabbedwithNavigationForm: TTabbedwithNavigationForm
         end>
       FillHeaderExpressions = <>
       FillHeaderFieldName = 'nro_resolucion'
+      FillBreakGroups = <>
+    end
+    object LinkPropertyToFieldTag: TLinkPropertyToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB4
+      FieldName = 'perfil_cliente_tipo_producto_id'
+      Component = lblInteres
+      ComponentProperty = 'TagString'
+    end
+    object LinkListControlToField2: TLinkListControlToField
+      Category = 'Quick Bindings'
+      DataSource = BindSourceDB4
+      FieldName = 'desc_tipo_producto'
+      Control = cbbTipoProducto
+      FillExpressions = <>
+      FillHeaderExpressions = <>
       FillBreakGroups = <>
     end
   end

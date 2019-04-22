@@ -86,6 +86,7 @@ type
     RespMenu: TRESTResponse;
     RESTClient2: TRESTClient;
     ImageList1: TImageList;
+    fdPerfilClientelinea_credito_id: TIntegerField;
   private
     { Private declarations }
   public

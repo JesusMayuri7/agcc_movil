@@ -96,7 +96,6 @@ type
     BindSourceDB2: TBindSourceDB;
     BindSourceDB3: TBindSourceDB;
     BindSourceDB4: TBindSourceDB;
-    linkTipoProducto: TLinkListControlToField;
     linkPerfilCliente: TLinkListControlToField;
     linkLineaCredito: TLinkListControlToField;
     lst3: TListBox;
@@ -212,6 +211,8 @@ type
     btn12: TSpeedButton;
     lstResumen: TListBox;
     lstAdicional: TListBox;
+    LinkPropertyToFieldTag: TLinkPropertyToField;
+    LinkListControlToField2: TLinkListControlToField;
     procedure GestureDone(Sender: TObject; const EventInfo: TGestureEventInfo; var Handled: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormKeyUp(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
@@ -251,10 +252,10 @@ type
     procedure AgregarAval(tipo,nombres:string;id:Integer);
     procedure llenarData();
     function TipoInfoToArray(lista:TListBox):TJsonArray;
-    procedure NuevaSolicitud(empleado_id,cliente_id:integer;interes,monto,plazo,cuota:real;
+    function NuevaSolicitud(empleado_id,cliente_id:integer;interes,monto,plazo,cuota:real;
     reporte_ceop_id,reporte_info_id,giro_negocio_id,tipo_prestamo_id,
     perfil_cliente_tipo_producto_id,garantia_id:Variant;comentario:string;
-    activo:boolean;avales:TJsonArray;tipoInfo:TJSONArray;aIncial,aProgramado:Real;tipo_interes:string);
+    activo:boolean;avales:TJsonArray;tipoInfo:TJSONArray;aIncial,aProgramado:Real;tipo_interes:string):TJSONObject;
     function GridToJsonArray(lista: TListview): TJsonArray;
     procedure listarSolicitud();
     var paginaActual:integer;
@@ -343,16 +344,16 @@ begin
     //Value.AsString:='hola '+value;
 end;
 
-procedure TTabbedwithNavigationForm.NuevaSolicitud(empleado_id,cliente_id:integer;interes,monto,plazo,cuota:real;
+function TTabbedwithNavigationForm.NuevaSolicitud(empleado_id,cliente_id:integer;interes,monto,plazo,cuota:real;
     reporte_ceop_id,reporte_info_id,giro_negocio_id,tipo_prestamo_id,
-    perfil_cliente_tipo_producto_id,garantia_id:Variant;comentario:string;activo:boolean;avales:TJsonArray;tipoInfo:TJsonArray;aIncial,aProgramado:Real;tipo_interes:string);
+    perfil_cliente_tipo_producto_id,garantia_id:Variant;comentario:string;activo:boolean;avales:TJsonArray;tipoInfo:TJsonArray;aIncial,aProgramado:Real;tipo_interes:string):TJSONObject;
 var graph:Tgraph;
 var variables:TJSONObject;
 var dataVar,dataRest,query:TJSONObject;
-var resultado:TJsonObject;
+//var resultado:TJsonObject;
 var I:byte;
 begin
-    resultado:=TJSONObject.Create;
+    result:=TJSONObject.Create;
     uHelpers.aInicial:=0;
     uHelpers.aProgramado:=0;
     interes:=dmDataMovil.fdTipoProducto.FieldValues['interes'];
@@ -388,7 +389,7 @@ begin
     dataVar.AddPair('ahorro_programado',TJSONNumber.Create(uHelpers.aProgramado));
     dataVar.AddPair('comentario',TJSONString.Create(comentario));
     dataVar.AddPair('tipo_interes',TJSONString.Create(tipo_interes));
-    ShowMessage(VarToStr(reporte_ceop_id));
+   // ShowMessage(VarToStr(reporte_ceop_id));
     if VarIsnull(reporte_ceop_id) then
        dataVar.AddPair('reporte_ceop_id',TJsonNUll.Create)
     else
@@ -420,11 +421,11 @@ begin
 
     graph.variables:=variables;
 
-    resultado:=graph.ejecutar('solicitudMutation');  // cambiar por el nombre del Query que buscas linea_creditoQuery
+    result:=graph.ejecutar('solicitudMutation');  // cambiar por el nombre del Query que buscas linea_creditoQuery
  //   uHelpers.InsertarRegistroDataset(resultado,fdSolicitud);
     // Listar();
     finally
-       FreeAndNil(resultado);
+//       FreeAndNil(resultado);
        FreeAndNil(graph);
     end;
 end;
@@ -618,6 +619,7 @@ end;
 
 procedure TTabbedwithNavigationForm.lstDataItemClick(
   const Sender: TCustomListBox; const Item: TListBoxItem);
+  var monto:Extended;
 begin
 InputBox('Ingrese monto?','','0.00',
         procedure(const AResult: TModalResult; const AValue: string)
@@ -626,7 +628,10 @@ InputBox('Ingrese monto?','','0.00',
               { Detect which button was pushed and show a different message }
               mrOk:
                 begin
-                    Item.ItemData.Detail:=AValue;
+                  if TryStrToFloat(avalue,monto) then
+                    Item.ItemData.Detail:= FormatFloat('#,##0.00',monto)
+                  else
+                    showmessage('solo numeros');
                 end;
                 mrCancel:
                 begin
@@ -681,6 +686,7 @@ begin
     // uHelpers.PrimerElementoCombo(cbbLineaCredito);
      dmDataMovil.adapAhorro.Active;
      uHelpers.JsonToDataset(dmDataMovil.fdPerfilCliente,VarToStr(dmDataMovil.fdLineaCredito.FieldValues['perfil_cliente']));
+
     llenarData();
     end
  else
@@ -841,7 +847,7 @@ begin
 //           aIncial,aProgramado:Real;tipo_interes:string);
             NuevaSolicitud(1,txtDniCliente.Tag,interes,txtMonto.Text.ToDouble,txtPlazo.Text.ToInteger,txtCuota.Text.ToDouble,
             IdReporteCeop,IdReporteInforCorp,
-            idGiroNegocio,IdTipoPrestamo,lblInteres.Tag,IdGarantia,
+            idGiroNegocio,IdTipoPrestamo,lblInteres.TagString.ToInteger,IdGarantia,
             edComentario.Lines.Text,true,gridToJsonArray(lvAval),TipoInfoToArray(lstData),aInicial,aProgramado,dmdataMovil.fdLineaCredito.FieldValues['tipo_interes']);
         end;
     end;
@@ -859,8 +865,12 @@ begin
 end;
 
 procedure TTabbedwithNavigationForm.btn9Click(Sender: TObject);
+var cuota:Extended;
 begin
-CrearSolicitud();
+if TryStrToFloat(txtcuota.Text,cuota) then
+   CrearSolicitud()
+else
+   ShowMessage('Define cuota');
 end;
 
 procedure TTabbedwithNavigationForm.btnNuevoClienteClick(Sender: TObject);
@@ -872,7 +882,7 @@ begin
      try
      cliente:=TJSONObject.Create;
      cliente:=grabarNuevoCliente(txtDniCliente.Text,txtNombresCliente.Text,txtPaterno.Text,txtMaterno.Text);
-     ShowMessage(cliente.ToString);
+     //ShowMessage(cliente.ToString);
      if cliente.TryGetValue('id',id) then
        begin
            ShowMessage('Cliente creado exitosamente');
@@ -888,19 +898,21 @@ procedure TTabbedwithNavigationForm.cbbLineaCreditoClosePopup(Sender: TObject);
 begin
 //ShowMessage(dmDataMovil.fdLineaCredito.FieldValues['perfil_cliente']);
 uHelpers.JsonToDataset(dmDataMovil.fdPerfilCliente,VarToStr(dmDataMovil.fdLineaCredito.FieldValues['perfil_cliente']));
-uHelpers.JsonToDataset(dmDataMovil.fdTipoProducto,VarToStr(dmDataMovil.fdPerfilCliente.FieldValues['tipo_producto']));
+//uHelpers.PrimerElementoCombo(cbbTipoProducto);
+//uHelpers.JsonToDataset(dmDataMovil.fdTipoProducto,VarToStr(dmDataMovil.fdPerfilCliente.FieldValues['tipo_producto']));
 end;
 
 procedure TTabbedwithNavigationForm.cbbPerfilClienteChange(Sender: TObject);
 begin
 
-      // uHelpers.PrimerElementoCombo(cbbTipoProducto);
+uHelpers.JsonToDataset(dmDataMovil.fdTipoProducto,VarToStr(dmDataMovil.fdPerfilCliente.FieldValues['tipo_producto']));
+//uHelpers.PrimerElementoCombo(cbbTipoProducto);
        //spnCuota.Value:=0;
 end;
 
 procedure TTabbedwithNavigationForm.cbbPerfilClienteClosePopup(Sender: TObject);
 begin
-uHelpers.JsonToDataset(dmDataMovil.fdTipoProducto,VarToStr(dmDataMovil.fdPerfilCliente.FieldValues['tipo_producto']));
+//uHelpers.JsonToDataset(dmDataMovil.fdTipoProducto,VarToStr(dmDataMovil.fdPerfilCliente.FieldValues['tipo_producto']));
 end;
 
 procedure TTabbedwithNavigationForm.CrearSolicitud;
@@ -908,6 +920,8 @@ var
     IdReporteCeop,IdReporteInforCorp,IdTipoPrestamo,IdGiroNegocio,IdGarantia: Variant;
     aInicial,aProgramado:real;
     interes:Extended;
+    respuesta:TJSONObject;
+    idCreado:string;
 begin
   //btnGuardar.Enabled:=false;
   IdReporteCeop:=null;
@@ -915,6 +929,7 @@ begin
   IdGiroNegocio:=null;
   IdTipoPrestamo:=null;
   IdGarantia:=null;
+  respuesta:=TJSONObject.Create;
  if TryStrToFloat(lblInteres.Text,interes) then
     begin
         if (Length(linkReporteCeop.BindList.GetSelectedValue.ToString)>0) AND (linkReporteCeop.BindList.GetSelectedValue.ToString<>'(empty)') then
@@ -949,10 +964,17 @@ begin
 //          reporte_ceop_id,reporte_info_id,giro_negocio_id,tipo_prestamo_id,
 //           perfil_cliente_tipo_producto_id,garantia_id:Variant;comentario:string;activo:boolean;avales:TJsonArray;
 //           aIncial,aProgramado:Real;tipo_interes:string);
-            NuevaSolicitud(1,txtDniCliente.Tag,interes,txtMonto.Text.ToDouble,txtPlazo.Text.ToInteger,txtCuota.Text.ToDouble,
+
+            respuesta:=NuevaSolicitud(1,txtDniCliente.Tag,interes,txtMonto.Text.ToDouble,txtPlazo.Text.ToInteger,txtCuota.Text.ToDouble,
             IdReporteCeop,IdReporteInforCorp,
-            idGiroNegocio,IdTipoPrestamo,lblInteres.Tag,IdGarantia,
+            idGiroNegocio,IdTipoPrestamo,lblInteres.TagString.ToInteger,IdGarantia,
             edComentario.Lines.Text,true,gridToJsonArray(lvAval),TipoInfoToArray(lstData),aInicial,aProgramado,dmdataMovil.fdLineaCredito.FieldValues['tipo_interes']);
+            if respuesta.TryGetValue('nro_solicitud',idCreado) then
+            begin
+               ShowMessage('Solicitud creada: #'+idCreado);
+               TabControl1.SetActiveTabWithTransition(TabSolicitud,TTabTransition.Slide,TTabTransitionDirection.Normal);
+               listarSolicitud();
+            end;
         end;
     end;
 end;
